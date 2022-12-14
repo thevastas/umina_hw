@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<record id="product_template_only_form_view_channels" model="ir.ui.view">
+			<field name="name">product.template.product.form.channels</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="website_sale.product_template_form_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//page[last()]" position="after">
+					<page name="amazon_channel" string="Amazon">
+						<group name="inventory">
+							<group name="group_lots_and_weight" string="Amazon sales channel" attrs="{'invisible': [('type', 'not in', ['product', 'consu'])]}">
+								<label for="uom_id"/>
+								<div class="o_row" name="uom_name">
+									<field name="uom_id"/>
+								</div>
+								<label for="list_price"/>
+								<div class="o_row" name="list_price">
+									<field name="list_price" string="Sales price"/>
+								</div>
+								<label for="image_1920"/>
+								<div class="o_row" name="image_1920">
+									<field name="image_1920" string="Image"/>
+								</div>
+								<label for="weight"/>
+								<div class="o_row" name="weight">
+									<field name="weight" string="Image"/>
+									<span>
+										<field name="weight_uom_name"/>
+									</span>
+								</div>
+							</group>
+						</group>
+						<group name="packaging" string="Packaging"
+                colspan="4"
+                attrs="{'invisible':['|', ('type', 'not in', ['product', 'consu']), ('product_variant_count', '>', 1), ('is_product_variant', '=', False)]}"
+                groups="product.group_stock_packaging">
+							<field name="packaging_ids" nolabel="1" context="{'tree_view_ref':'product.product_packaging_tree_view2', 'form_view_ref':'product.product_packaging_form_view2', 'default_company_id': company_id}"/>
+						</group>
+					</page>
+					<page name="ebay_channel" string="eBay">
+						<field name="attribute_line_ids" widget="one2many" context="{'show_attribute': False}">
+							<tree string="Variants" editable="bottom" decoration-info="value_count &lt;= 1">
+								<field name="value_count" invisible="1"/>
+								<field name="attribute_id" attrs="{'readonly': [('id', '!=', False)]}"/>
+								<field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True, 'color_field': 'color'}" context="{'default_attribute_id': attribute_id, 'show_attribute': False}"/>
+								<button string="Configure" class="float-end btn-secondary" type="object" name="action_open_attribute_values" groups="product.group_product_variant"/>
+							</tree>
+						</field>
+						<label for="list_price"/>
+						<div class="o_row" name="list_price">
+							<field name="list_price" string="Sales price"/>
+						</div>
+					</page>
+					<page name="lt_channel" string="LT">
+						<field name="uom_id"/>
+						<field name="list_price"/>
+					</page>
+					<page name="lv_channel" string="LV">
+						<field name="list_price"/>
+						<field name="weight"/>
+						<field name="volume"/>
+					</page>
+					<page name="ee_channel" string="EE">
+						<field name="list_price"/>
+						<field name="weight"/>
+						<field name="volume"/>
+					</page>
+				</xpath>
+			</field>
+		</record>
+		<record id="view_order_form_inherit" model="ir.ui.view">
+			<field name="name">Sale Order Custom</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_tree_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[last()]" position="after">
+					<field name="progress_amazon" widget="progressbar" string="Amazon" optional="hide"/>
+					<field name="progress_ebay" widget="progressbar" string="eBay" optional="hide"/>
+					<field name="progress_lt" widget="progressbar" string="LT" optional="hide"/>
+					<field name="progress_lv" widget="progressbar" string="LV" optional="hide"/>
+					<field name="progress_ee" widget="progressbar" string="EE" optional="hide"/>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>
