@@ -83,5 +83,8 @@
 				</xpath>
 			</field>
 		</record>
+		<record id="stock.product_template_action_product" model="ir.actions.act_window">
+			<field name="view_mode">tree,form,kanban</field>
+		</record>
 	</data>
 </odoo>
